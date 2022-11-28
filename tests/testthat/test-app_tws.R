@@ -1,13 +1,15 @@
 library(shinytest2)
 
-# launch app for all tests
+# define tha pp
 tws <- app_tws()
-app <- AppDriver$new(tws, name = "tws")
 
 # testing snapshots
 testthat::test_that("file name and table content", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(tws, name = "tws")
 
   # default file name
   file_name <- app$get_value(input = "table_with_settings-downbutton-file_name")
@@ -19,12 +21,18 @@ testthat::test_that("file name and table content", {
 
   # check for table content
   app$expect_text("table")
+
+  # stop the app
+  app$stop()
 })
 
 # download tables
 testthat::test_that("txt and csv download", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(tws, name = "tws")
 
   # download table in .csv
   app$click("table_with_settings-downbutton-dwnl")
@@ -39,6 +47,9 @@ testthat::test_that("txt and csv download", {
   app$set_inputs(`table_with_settings-downbutton-dwnl_state` = TRUE)
   app$set_inputs(`table_with_settings-downbutton-file_name` = "tab2")
   app$expect_download("table_with_settings-downbutton-data_download")
+
+  # stop the app
+  app$stop()
 })
 
-app$stop()
+

@@ -26,14 +26,16 @@ click_vals <- c(
   368.846473150198, 5.47945205479452, character(0), character(0)
 )
 
-# one app opens for all tests
+# define app
 pws <- app_pws()
-app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
 # tests plot click functionalities
 testthat::test_that("plot_with_settings: click functionalities ggplot2", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   # hovering
   app$set_inputs(
@@ -85,17 +87,16 @@ testthat::test_that("plot_with_settings: click functionalities ggplot2", {
     brush_vals
   )
 
-  # reset brush to character(0) for next tests
-  app$set_inputs(
-    `plot_with_settings-plot_brush` = character(0),
-    allow_no_input_binding_ = TRUE
-  )
+  # stop the app after finishing all tests
+  app$stop()
 })
-
 # test output that is returned (reactives and graphic encoded in base64)
 testthat::test_that("plot_with_settings: output is returned", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   vals <- app$get_values()
 
@@ -116,6 +117,9 @@ testthat::test_that("plot_with_settings: output is returned", {
     )
   )
   # nolint end
+
+  # stop the app after finishing all tests
+  app$stop()
 })
 
 # download plots. expect_download() might not be stable, hence we test
@@ -123,6 +127,9 @@ testthat::test_that("plot_with_settings: output is returned", {
 testthat::test_that("plot_with_settings: download functionality ggplot2", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   # test default download options
   app$click("plot_with_settings-downbutton-downl")
@@ -157,15 +164,17 @@ testthat::test_that("plot_with_settings: download functionality ggplot2", {
   testthat::expect_equal(isolate(vals$output$`plot_with_settings-plot_main`$height), 300)
   testthat::expect_equal(isolate(vals$output$`plot_with_settings-plot_main`$width), 300)
 
-  # reset
-  app$set_inputs(`plot_with_settings-expbut_state` = FALSE)
-  app$set_inputs(`plot_with_settings-downbutton-downl_state` = FALSE)
+  # stop the app after finishing all tests
+  app$stop()
 })
 
 # downloading plot with modal
 testthat::test_that("plot_with_settings: download ggplot2 modal", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   # default downloading with modal
   app$set_inputs(
@@ -226,14 +235,17 @@ testthat::test_that("plot_with_settings: download ggplot2 modal", {
     "plot_svg_modal"
   )
 
-  # reset
-  app$set_inputs(`plot_with_settings-modal_downbutton-downl_state` = FALSE)
+  # stop the app after finishing all tests
+  app$stop()
 })
 
 # Testing hide and show button
 testthat::test_that("plot_with_settings: hide/show button", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   # nolint start
   # visible on load
@@ -259,6 +271,9 @@ testthat::test_that("plot_with_settings: hide/show button", {
     )
   )
   # nolint end
+
+  # stop the app after finishing all tests
+  app$stop()
 })
 
 # tests width warning displays when width too low, hides when not.
@@ -268,6 +283,9 @@ testthat::test_that("plot_with_settings: hide/show button", {
 testthat::test_that("plot_with_settings: width warning", {
   skip_on_cran()
   skip_on_ci()
+
+  # Run the app
+  app <- AppDriver$new(pws, name = pws, height = 937, width = 1619)
 
   app$click("plot_with_settings-expbut")
 
@@ -294,7 +312,8 @@ testthat::test_that("plot_with_settings: width warning", {
   testthat::expect_equal(
     app$get_js("$('#plot_with_settings-width_warning').children().length"), 1
   )
+  # stop the app after finishing all tests
+  app$stop()
 })
 
-# stop the app after finishing all tests
-app$stop()
+
